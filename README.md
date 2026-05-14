@@ -2,6 +2,68 @@
 
 ---
 
+# Flujo de trabajo con Git y ramas
+
+Para mantener una organización adecuada del proyecto y cumplir con el requisito de utilizar una branch principal (`main`) y Pull Requests por integrante, se implementó la siguiente estructura de ramas:
+
+## Estructura de ramas
+
+```txt id="x1zw95"
+main
+└── dev
+    ├── dannyDev
+    ├── abiDev
+    ├── tonaDev
+    ├── flaviaDev
+    ├── axelDev
+    └── luisDev
+```
+
+## Descripción de ramas
+
+### `main`
+
+Contiene la versión final y estable del proyecto.
+
+### `dev`
+
+Rama de integración general donde se realizan las pruebas y merges del trabajo del equipo antes de pasar a producción.
+
+### Ramas individuales
+
+Cada integrante trabaja únicamente en su propia rama para evitar conflictos y mantener organizado el desarrollo.
+
+| Rama      | Integrante |
+| --------- | ---------- |
+| dannyDev  | Danny      |
+| abiDev    | Abi        |
+| tonaDev   | Tona       |
+| flaviaDev | Flavia     |
+| axelDev   | Axel       |
+| luisDev   | Luis       |
+
+---
+
+# Flujo de trabajo
+
+1. Cada integrante desarrolla funcionalidades en su propia rama.
+2. Los cambios se suben al repositorio mediante commits.
+3. Se crea un Pull Request hacia la rama `dev`.
+4. Después de validar la integración y funcionamiento del proyecto, los cambios de `dev` se integran a `main`.
+
+---
+
+# Reglas de trabajo
+
+* No trabajar directamente sobre `main`
+* Todos los cambios deben pasar por Pull Request
+* Mantener sincronizada la rama personal con `dev`
+* Realizar commits descriptivos y organizados
+* Verificar funcionamiento antes de hacer merge
+
+
+---
+
 # Objetivo del proyecto
 
 Desarrollar una plataforma web dinámica que permita:
