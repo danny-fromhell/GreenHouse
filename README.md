@@ -1,7 +1,5 @@
 # Green House
 
-Green House es una aplicación web enfocada en la consulta y visualización de información sobre plantas, sus características y cuidados. El proyecto utiliza una arquitectura MVC con HTML, CSS y JavaScript, además de consumo de API REST y autenticación JWT para el módulo administrativo.
-
 ---
 
 # Objetivo del proyecto
