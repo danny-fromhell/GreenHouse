@@ -6,23 +6,23 @@ export function renderDashboard(plants) {
   if (!app) return;
 
   const totalPlants = plants.length;
-  const totalViews = plants.reduce((sum, plant) => sum + plant.views, 0);
-  const totalSales = plants.reduce((sum, plant) => sum + plant.sales, 0);
+  const totalViews = plants.reduce((sum, plant) => sum + (plant.views || 0), 0);
+  const totalSales = plants.reduce((sum, plant) => sum + (plant.sales || 0), 0);
   const estimatedRevenue = totalSales * 149;
 
   const popularPlants = [...plants]
-    .sort((a, b) => b.views - a.views)
+    .sort((a, b) => (b.views || 0) - (a.views || 0))
     .slice(0, 5);
 
   app.innerHTML = `
     <aside class="sidebar">
       <h2>Admin Panel</h2>
       <p>Green House</p>
+
       <nav>
-        <a href="#">Overview</a>
-        <a href="plants.html">Plantas</a>
-        <a href="#">Ventas</a>
+        <a href="#" class="active">Overview</a>
         <a href="#">Usuarios</a>
+        <a href="login.html">Cerrar sesión</a>
       </nav>
     </aside>
 
@@ -73,7 +73,7 @@ export function renderDashboard(plants) {
                 (plant) => `
                 <li>
                   <strong>${plant.name}</strong>
-                  <small>${formatNumber(plant.views)} visitas, ${plant.sales} ventas</small>
+                  <small>${formatNumber(plant.views || 0)} visitas, ${plant.sales || 0} ventas</small>
                 </li>
               `
               )
