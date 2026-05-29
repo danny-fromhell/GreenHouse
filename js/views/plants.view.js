@@ -10,31 +10,38 @@ export function renderPlants(plants) {
 
   container.innerHTML = plants
     .map(
-      (plant) => `
-      <article class="plant-card">
-        <div class="plant-image">
-          <img 
-            src="${plant.image}" 
-            alt="${plant.name}"
-            onerror="this.onerror=null; this.src='./assets/img/plant-placeholder.jpg'; this.alt='Imagen no disponible por la API externa';"
-          >
-          <span>${plant.category}</span>
-        </div>
-
-        <div class="plant-content">
-          <h3>${plant.name}</h3>
-          <p class="scientific">${plant.scientificName}</p>
-          <p>${plant.shortDescription || plant.description}</p>
-
-          <div class="plant-footer">
-            <span class="difficulty">${plant.difficulty}</span>
-            <button class="btn-secondary" data-id="${plant.id}">
-              Ver más
-            </button>
+      (plant) => {
+        const imageSrc = plant.image && plant.image !== "" && plant.image !== "undefined" 
+          ? plant.image 
+          : "./assets/img/plant-placeholder.jpg";
+        
+        return `
+        <article class="plant-card">
+          <div class="plant-image">
+            <img 
+              src="${imageSrc}" 
+              alt="${plant.name || 'Planta'}"
+              loading="lazy"
+              onerror="this.onerror=null; this.src='./assets/img/plant-placeholder.jpg';"
+            >
+            <span>${plant.category || 'Planta'}</span>
           </div>
-        </div>
-      </article>
-    `
+
+          <div class="plant-content">
+            <h3>${escapeHtml(plant.name || 'Nombre no disponible')}</h3>
+            <p class="scientific">${escapeHtml(plant.scientificName || 'No disponible')}</p>
+            <p>${escapeHtml(plant.shortDescription || plant.description || 'Sin descripción disponible')}</p>
+
+            <div class="plant-footer">
+              <span class="difficulty">${escapeHtml(plant.difficulty || 'Moderado')}</span>
+              <button class="btn-secondary" data-id="${plant.id}">
+                Ver más
+              </button>
+            </div>
+          </div>
+        </article>
+      `;
+      }
     )
     .join("");
 }
@@ -45,37 +52,41 @@ export function renderPlantModal(plant) {
   if (!modal || !plant) return;
 
   const specs = plant.specs;
+  
+  const imageSrc = plant.image && plant.image !== "" && plant.image !== "undefined" 
+    ? plant.image 
+    : "./assets/img/plant-placeholder.jpg";
 
   modal.innerHTML = `
     <div class="modal-content">
       <button class="modal-close" id="closeModal">×</button>
 
       <img 
-        src="${plant.image}" 
-        alt="${plant.name}"
-        onerror="this.onerror=null; this.src='./assets/img/plant-placeholder.jpg'; this.alt='Imagen no disponible por la API externa';"
+        src="${imageSrc}" 
+        alt="${plant.name || 'Planta'}"
+        onerror="this.onerror=null; this.src='./assets/img/plant-placeholder.jpg';"
       >
 
-      <h2>${plant.name}</h2>
-      <p class="scientific">${plant.scientificName}</p>
-      <p>${plant.description}</p>
+      <h2>${escapeHtml(plant.name || 'Nombre no disponible')}</h2>
+      <p class="scientific">${escapeHtml(plant.scientificName || 'No disponible')}</p>
+      <p>${escapeHtml(plant.description || 'Sin descripción disponible')}</p>
 
       <h3>Cuidados</h3>
-      <p>${plant.care || "Información de cuidados no disponible."}</p>
+      <p>${escapeHtml(plant.care || "Información de cuidados no disponible.")}</p>
 
       ${
         specs
           ? `
           <h3>Especificaciones</h3>
           <div class="plant-specs">
-            <p>🔄 Cycle: ${specs.cycle}</p>
-            <p>💧 Watering: ${specs.watering}</p>
-            <p>🗺️ Hardiness Zone: ${specs.hardiness}</p>
-            <p>☀️ Sun: ${specs.sunlight}</p>
-            <p>🌲 Cones: ${specs.cones}</p>
-            <p>🍃 Leaf: ${specs.leaf}</p>
-            <p>🚀 Growth Rate: ${specs.growthRate}</p>
-            <p>🧑‍🌾 Care Level: ${specs.careLevel}</p>
+            <p>🔄 Ciclo: ${escapeHtml(specs.cycle || 'No especificado')}</p>
+            <p>💧 Riego: ${escapeHtml(specs.watering || 'No especificado')}</p>
+            <p>🗺️ Zona: ${escapeHtml(specs.hardiness || 'No especificado')}</p>
+            <p>☀️ Luz: ${escapeHtml(specs.sunlight || 'No especificada')}</p>
+            <p>🌲 Conos: ${escapeHtml(specs.cones || 'No')}</p>
+            <p>🍃 Hojas: ${escapeHtml(specs.leaf || 'No')}</p>
+            <p>🚀 Crecimiento: ${escapeHtml(specs.growthRate || 'No especificado')}</p>
+            <p>🧑‍🌾 Cuidado: ${escapeHtml(specs.careLevel || 'No especificado')}</p>
           </div>
           `
           : ""
@@ -85,7 +96,25 @@ export function renderPlantModal(plant) {
 
   modal.classList.add("active");
 
-  document.querySelector("#closeModal").addEventListener("click", () => {
-    modal.classList.remove("active");
+  const closeBtn = document.querySelector("#closeModal");
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      modal.classList.remove("active");
+    });
+  }
+  
+  // Cerrar modal al hacer clic fuera del contenido
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.classList.remove("active");
+    }
   });
+}
+
+// Función auxiliar para escapar HTML y prevenir XSS
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
 }

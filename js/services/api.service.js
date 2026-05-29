@@ -65,6 +65,157 @@ export async function getApiPlantById(apiId) {
   return mapDetailedApiPlant(plant);
 }
 
+// Función mejorada para determinar la categoría de la planta (Interior/Exterior)
+function getPlantCategory(plant) {
+  // Si la API ya tiene indoor definido, usarlo
+  if (plant.indoor === true) return "Interior";
+  if (plant.indoor === false) return "Exterior";
+  
+  // Si no, determinar por otros campos
+  const sunlight = plant.sunlight || [];
+  const watering = plant.watering || "";
+  const cycle = plant.cycle || "";
+  const name = (plant.common_name || "").toLowerCase();
+  const scientificName = (plant.scientific_name?.[0] || "").toLowerCase();
+  
+  // Palabras clave para plantas de interior
+  const interiorKeywords = [
+    "indoor", "houseplant", "interior", "sombra", "shade", 
+    "low light", "poca luz", "apartment", "oficina",
+    "monstera", "sansevieria", "pothos", "philodendron", "fern", "helecho",
+    "calathea", "maranta", "peace lily", "lirio de paz", "spider plant",
+    "zz plant", "dracaena", "ficus", "aloe", "cactus", "suculent"
+  ];
+  
+  // Palabras clave para plantas de exterior
+  const exteriorKeywords = [
+    "outdoor", "exterior", "garden", "jardín", "full sun", "sol directo",
+    "tree", "árbol", "shrub", "arbusto", "perennial", "perenne",
+    "maple", "pine", "oak", "roble", "pino"
+  ];
+  
+  // Verificar por nombre común y científico
+  for (const keyword of interiorKeywords) {
+    if (name.includes(keyword) || scientificName.includes(keyword)) {
+      return "Interior";
+    }
+  }
+  
+  for (const keyword of exteriorKeywords) {
+    if (name.includes(keyword) || scientificName.includes(keyword)) {
+      return "Exterior";
+    }
+  }
+  
+  // Verificar por necesidades de luz
+  if (sunlight.some(s => s.toLowerCase().includes("shade") || s.toLowerCase().includes("indirect"))) {
+    return "Interior";
+  }
+  
+  if (sunlight.some(s => s.toLowerCase().includes("full sun"))) {
+    return "Exterior";
+  }
+  
+  // Verificar por riego (plantas de interior suelen necesitar menos riego)
+  if (watering.toLowerCase().includes("minimum") || watering.toLowerCase().includes("low")) {
+    return "Interior";
+  }
+  
+  // Default basado en ciclo
+  if (cycle.toLowerCase().includes("perennial")) {
+    return "Exterior";
+  }
+  
+  return "Interior";
+}
+
+// Función para obtener tipo específico de planta
+function getPlantType(plant) {
+  const name = (plant.common_name || "").toLowerCase();
+  const scientificName = (plant.scientific_name?.[0] || "").toLowerCase();
+  
+  if (name.includes("cactus") || scientificName.includes("cact")) return "Cactus";
+  if (name.includes("succulent") || name.includes("suculenta")) return "Suculenta";
+  if (name.includes("monstera")) return "Tropical";
+  if (name.includes("fern") || name.includes("helecho")) return "Helecho";
+  if (name.includes("orchid") || name.includes("orquídea")) return "Orquídea";
+  if (name.includes("palm") || name.includes("palma")) return "Palma";
+  if (name.includes("ficus")) return "Ficus";
+  if (name.includes("sansevieria")) return "Sansevieria";
+  if (name.includes("aloe")) return "Aloe";
+  if (name.includes("pothos") || name.includes("potus")) return "Pothos";
+  if (name.includes("philodendron")) return "Filodendro";
+  if (name.includes("calathea")) return "Calatea";
+  if (name.includes("maranta")) return "Maranta";
+  if (name.includes("dracaena")) return "Dracaena";
+  if (name.includes("peace lily") || name.includes("lirio")) return "Lirio de Paz";
+  if (name.includes("zz plant")) return "ZZ Plant";
+  if (name.includes("rose") || name.includes("rosa")) return "Rosa";
+  if (name.includes("lavender") || name.includes("lavanda")) return "Lavanda";
+  if (name.includes("mint") || name.includes("menta")) return "Aromática";
+  if (name.includes("basil") || name.includes("albahaca")) return "Aromática";
+  
+  return "Otra";
+}
+
+// Función para obtener una imagen válida
+function getValidImageUrl(plant) {
+  const imageUrl = 
+    plant.default_image?.original_url ||
+    plant.default_image?.regular_url ||
+    plant.default_image?.medium_url ||
+    plant.default_image?.small_url ||
+    plant.image_url ||
+    null;
+  
+  const isValidApiUrl = imageUrl && 
+    imageUrl !== "https://perenual.com/storage/image/undefined" &&
+    !imageUrl.includes("undefined") &&
+    imageUrl !== "" &&
+    (imageUrl.startsWith("http://") || imageUrl.startsWith("https://"));
+  
+  if (isValidApiUrl) {
+    return imageUrl;
+  }
+  
+  return getPlaceholderImage(plant.common_name || plant.scientific_name?.[0]);
+}
+
+// Función para obtener placeholder según el nombre de la planta
+function getPlaceholderImage(plantName) {
+  const name = (plantName || "").toLowerCase();
+  
+  if (name.includes("monstera")) {
+    return "https://images.unsplash.com/photo-1614594972925-0f6a7ab4b1a1?w=400&h=300&fit=crop";
+  }
+  if (name.includes("sansevieria") || name.includes("lengua") || name.includes("snake")) {
+    return "https://images.unsplash.com/photo-1593482892290-f54927f9793a?w=400&h=300&fit=crop";
+  }
+  if (name.includes("cactus") || name.includes("succulent")) {
+    return "https://images.unsplash.com/photo-1484046217100-ff954bbde24d?w=400&h=300&fit=crop";
+  }
+  if (name.includes("aloe")) {
+    return "https://images.unsplash.com/photo-1578297345415-b28e5ac1abde?w=400&h=300&fit=crop";
+  }
+  if (name.includes("helecho") || name.includes("fern")) {
+    return "https://images.unsplash.com/photo-1595411596798-1c92f3597c28?w=400&h=300&fit=crop";
+  }
+  if (name.includes("orquídea") || name.includes("orchid")) {
+    return "https://images.unsplash.com/photo-1566125882500-7e10f709b023?w=400&h=300&fit=crop";
+  }
+  if (name.includes("palm")) {
+    return "https://images.unsplash.com/photo-1515238152791-8216bfdf89a7?w=400&h=300&fit=crop";
+  }
+  if (name.includes("ficus") || name.includes("rubber")) {
+    return "https://images.unsplash.com/photo-1602526836071-7ffc1e5dc7cf?w=400&h=300&fit=crop";
+  }
+  if (name.includes("rose")) {
+    return "https://images.unsplash.com/photo-1496062031457-0d8e9c67f6dc?w=400&h=300&fit=crop";
+  }
+  
+  return "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop";
+}
+
 function mapBasicApiPlant(plant) {
   return {
     id: `api-${plant.id}`,
@@ -73,12 +224,10 @@ function mapBasicApiPlant(plant) {
     scientificName: plant.scientific_name?.[0] || "Nombre científico no disponible",
     description: buildApiShortDescription(plant),
     shortDescription: buildApiShortDescription(plant),
-    category: plant.indoor === true ? "Interior" : "Exterior",
+    category: getPlantCategory(plant),
+    type: getPlantType(plant),
     difficulty: getDifficultyLabel(plant.care_level, plant.watering),
-    image:
-      plant.default_image?.regular_url ||
-      plant.default_image?.medium_url ||
-      "./assets/img/plant-placeholder.jpg",
+    image: getValidImageUrl(plant),
     care:
       `Riego: ${translateWatering(plant.watering)}. ` +
       `Luz recomendada: ${translateSunlight(plant.sunlight)}.`,
@@ -103,12 +252,10 @@ function mapDetailedApiPlant(plant) {
     scientificName: plant.scientific_name?.[0] || "Nombre científico no disponible",
     description: buildApiDescription(plant),
     shortDescription: buildApiShortDescription(plant),
-    category: plant.indoor === true ? "Interior" : "Exterior",
+    category: getPlantCategory(plant),
+    type: getPlantType(plant),
     difficulty: getDifficultyLabel(plant.care_level, plant.watering),
-    image:
-      plant.default_image?.regular_url ||
-      plant.default_image?.medium_url ||
-      "./assets/img/plant-placeholder.jpg",
+    image: getValidImageUrl(plant),
     care:
       `Nivel de cuidado: ${translateCareLevel(plant.care_level)}. ` +
       `Riego: ${translateWatering(plant.watering)}. ` +
@@ -128,9 +275,7 @@ function mapDetailedApiPlant(plant) {
 
 function buildApiShortDescription(plant) {
   const name = plant.common_name || "Esta planta";
-  const scientificName =
-    plant.scientific_name?.[0] ||
-    "especie ornamental";
+  const scientificName = plant.scientific_name?.[0] || "especie ornamental";
 
   const cycle = translateCycle(plant.cycle).toLowerCase();
   const category = plant.indoor === true ? "interiores" : "jardines y exteriores";
@@ -185,9 +330,7 @@ function buildApiDescription(plant) {
   }
 
   const name = plant.common_name || "Esta planta";
-  const scientificName =
-    plant.scientific_name?.[0] ||
-    "nombre científico no disponible";
+  const scientificName = plant.scientific_name?.[0] || "nombre científico no disponible";
   const cycle = translateCycle(plant.cycle).toLowerCase();
   const watering = translateWatering(plant.watering).toLowerCase();
   const sunlight = translateSunlight(plant.sunlight).toLowerCase();
