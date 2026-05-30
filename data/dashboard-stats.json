@@ -1,0 +1,56 @@
+{
+  "overview": {
+    "total_plants": 12,
+    "visitas_semanales": 845,
+    "visitas_diarias": 120,
+    "top_horarios": [
+      { "hora": "10:00 - 11:00", "visitas": 45 },
+      { "hora": "11:00 - 12:00", "visitas": 52 },
+      { "hora": "16:00 - 17:00", "visitas": 38 },
+      { "hora": "17:00 - 18:00", "visitas": 41 },
+      { "hora": "18:00 - 19:00", "visitas": 35 }
+    ]
+  },
+  "top_plants": [
+    {
+      "name": "Monstera Deliciosa",
+      "visits": 1245,
+      "sales": 89
+    },
+    {
+      "name": "Sansevieria Trifasciata",
+      "visits": 987,
+      "sales": 156
+    },
+    {
+      "name": "Calathea Orbifolia",
+      "visits": 876,
+      "sales": 67
+    },
+    {
+      "name": "Ficus Lyrata",
+      "visits": 754,
+      "sales": 45
+    },
+    {
+      "name": "Aloe Vera",
+      "visits": 654,
+      "sales": 234
+    }
+  ],
+  "top_tipos_plantas": [
+    { "tipo": "Tropicales", "consultas": 345 },
+    { "tipo": "Suculentas", "consultas": 278 },
+    { "tipo": "Follaje", "consultas": 234 },
+    { "tipo": "Florales", "consultas": 189 },
+    { "tipo": "Medicinales", "consultas": 156 }
+  ],
+  "user_registrations": [
+    { "month": "Ene 2025", "count": 12 },
+    { "month": "Feb 2025", "count": 15 },
+    { "month": "Mar 2025", "count": 23 },
+    { "month": "Abr 2025", "count": 18 },
+    { "month": "May 2025", "count": 28 },
+    { "month": "Jun 2025", "count": 32 }
+  ]
+}
