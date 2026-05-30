@@ -1,0 +1,21 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "admin@greenhouse.com",
+      "password": "12345678",
+      "role": "admin",
+      "name": "Administrador",
+      "created_at": "2024-01-15"
+    },
+    {
+      "id": 2,
+      "email": "juan@example.com",
+      "password": "user123",
+      "role": "admin",
+      "name": "Juan Pérez",
+      "created_at": "2024-02-20"
+    }
+    
+  ]
+}
