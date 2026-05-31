@@ -72,7 +72,7 @@ Desarrollar una plataforma web dinámica que permita:
 * Visualizar cuidados y características
 * Consumir una API REST
 * Implementar autenticación JWT
-* Utilizar almacenamiento en caché
+* Utilizar cookies
 * Mostrar métricas en un dashboard administrativo
 
 ---
@@ -92,9 +92,8 @@ Desarrollar una plataforma web dinámica que permita:
 
 * Inicio de sesión mediante JWT
 * Dashboard de métricas
-* Gestión de plantas
 * Visualización de estadísticas
-* Monitoreo de interacciones y ventas
+* Monitoreo de interacciones 
 
 ---
 
@@ -115,13 +114,11 @@ Desarrollar una plataforma web dinámica que permita:
 * Git
 * GitHub
 * Jira
-* Figma
 
 ## Extras
 
 * API REST
 * JWT Authentication
-* LocalStorage
 * JSON
 
 ---
@@ -170,14 +167,14 @@ GreenHouse/
 
 # Integrantes del equipo
 
-| Integrante | Responsabilidad                         |
-| ---------- | --------------------------------------- |
-| Danny      | Diseño de FrontEnd y repositorio GitHub |
-| Abi        | Arquitectura MVC                        |
-| Tona       | Configuración, datos y caché            |
-| Flavia     | Lógica principal e interfaz             |
-| Axel       | Utilidades y apoyo                      |
-| Luis       | Integración y pruebas                   |
+| Integrante | Responsabilidad                                                         |
+| ---------- | ----------------------------------------------------------------------- |
+| Danny      | Arquitectura MVC, lógica principal y conexion API REST.                 |
+| Abi        | Sketch del sitio y dasboard, pantalla de usuarios.                      |
+| Flavia     | Datos y cookies.                                                        |
+| Tona       | Creación de BD y conexion de BD.                                        |
+| Axel       | Autenticacion JWT.                                                      |
+| Luis       | Integración, pruebas y correciones.                                     |
 
 ---
 
