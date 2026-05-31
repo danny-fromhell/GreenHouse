@@ -246,7 +246,7 @@ body[data-theme="dark"] .header {
 .info-section {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 30px;
 }
 
 .info-card,
@@ -255,11 +255,44 @@ body[data-theme="dark"] .header {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-soft);
 }
 
 .info-card {
-  padding: 28px;
+  padding: 32px 24px;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+/* EFECTO HOVER - QUE SE LEVANTE */
+.info-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow);
+  border-color: var(--primary);
+}
+
+/* Icono dentro de la tarjeta */
+.info-icon {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  transition: transform 0.3s ease;
+}
+
+.info-icon i {
+  font-size: 32px;
+  color: white;
+}
+
+/* Efecto de escala en el ícono al hacer hover */
+.info-card:hover .info-icon {
+  transform: scale(1.1);
 }
 
 .info-card h2,
@@ -269,6 +302,18 @@ body[data-theme="dark"] .header {
 .panel h2,
 .panel h3 {
   margin-top: 0;
+}
+
+.info-card h2 {
+  margin: 0 0 16px;
+  font-size: 1.5rem;
+  color: var(--text);
+}
+
+.info-card p {
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0;
 }
 
 .page-title {
@@ -846,6 +891,7 @@ body[data-theme="dark"] .alert-error {
 
   .info-section {
     grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
   }
 }
 
@@ -938,6 +984,25 @@ body[data-theme="dark"] .alert-error {
 
   .info-section {
     grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 40px 20px;
+  }
+
+  .info-card {
+    padding: 24px 20px;
+  }
+
+  .info-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .info-icon i {
+    font-size: 28px;
+  }
+
+  .info-card h2 {
+    font-size: 1.3rem;
   }
 
   .footer-grid {
