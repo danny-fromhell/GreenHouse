@@ -23,8 +23,52 @@ function deleteCookie(name) {
   document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;SameSite=Strict`;
 }
 
-const COOKIE_NAME = 'gh_session';
-const COOKIE_DAYS = 7;
+// ── JWT simulado ───────────────────────────────────────────────────────
+
+function base64url(str) {
+  return btoa(unescape(encodeURIComponent(str)))
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
+}
+
+function generateFakeJWT(user) {
+  const header = base64url(JSON.stringify({ alg: "HS256", typ: "JWT" }));
+
+  const payload = base64url(JSON.stringify({
+    sub: user.id,
+    email: user.email,
+    name: user.name,
+    role: user.role,
+    iat: Math.floor(Date.now() / 1000),        // issued at (ahora)
+    exp: Math.floor(Date.now() / 1000) + 3600  // expira en 1 hora
+  }));
+
+  const fakeSignature = base64url("greenhouse-fake-signature-" + user.id);
+  return `${header}.${payload}.${fakeSignature}`;
+}
+
+function decodeJWTPayload(token) {
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) return null;
+    const payload = parts[1];
+    const padded = payload + '=='.slice(0, (4 - payload.length % 4) % 4);
+    return JSON.parse(decodeURIComponent(escape(atob(padded.replace(/-/g, '+').replace(/_/g, '/')))));
+  } catch (e) {
+    console.error("Error decodificando JWT:", e);
+    return null;
+  }
+}
+
+function isJWTExpired(token) {
+  const payload = decodeJWTPayload(token);
+  if (!payload || !payload.exp) return true;
+  return Math.floor(Date.now() / 1000) > payload.exp;
+}
+
+const COOKIE_NAME = 'gh_token';
+const COOKIE_DAYS = 1;
 
 // Servicio de autenticación mejorado con JSON local
 export async function login(email, password) {
@@ -47,15 +91,24 @@ export async function login(email, password) {
         created_at: user.created_at
       };
       
-      // Guardar en localStorage
-      localStorage.setItem(APP_CONFIG.storageKeys.authKey, JSON.stringify(currentUser));
-      // Guardar en cookie para persistencia
-      setCookie(COOKIE_NAME, JSON.stringify(currentUser), COOKIE_DAYS);
+      
+      // Generar JWT simulado
+const fakeJwt = generateFakeJWT(currentUser);
+
+// Guardar JWT en cookie
+document.cookie = `${COOKIE_NAME}=${fakeJwt}; path=/; max-age=3600; SameSite=Strict`;
+
+// Respaldo en localStorage
+localStorage.setItem(APP_CONFIG.storageKeys.authKey, JSON.stringify(currentUser));
+
+console.log("JWT generado:", fakeJwt);
+console.log("Payload decodificado:", decodeJWTPayload(fakeJwt));
       
       return {
         success: true,
         user: currentUser,
-        role: user.role
+        role: user.role,
+        token: fakeJwt
       };
     } else {
       return {
@@ -79,17 +132,34 @@ export function logout() {
 }
 
 export function isAuthenticated() {
-  // Verificar localStorage primero
-  if (localStorage.getItem(APP_CONFIG.storageKeys.authKey)) return true;
-
-  // Si no hay localStorage pero sí cookie, restaurar sesión desde cookie
-  const cookieSession = getCookie(COOKIE_NAME);
-  if (cookieSession) {
-    localStorage.setItem(APP_CONFIG.storageKeys.authKey, cookieSession);
+  // 1. Verificar JWT en cookie
+  const token = getCookie(COOKIE_NAME);
+  if (token && !isJWTExpired(token)) {
+    // Restaurar sesión desde JWT si no hay localStorage
+    if (!localStorage.getItem(APP_CONFIG.storageKeys.authKey)) {
+      const payload = decodeJWTPayload(token);
+      if (payload) {
+        const userFromToken = {
+          id: payload.sub,
+          email: payload.email,
+          name: payload.name,
+          role: payload.role
+        };
+        localStorage.setItem(APP_CONFIG.storageKeys.authKey, JSON.stringify(userFromToken));
+      }
+    }
     return true;
   }
 
-  return false;
+  // 2. Si el token expiró, limpiar todo
+  if (token && isJWTExpired(token)) {
+    deleteCookie(COOKIE_NAME);
+    localStorage.removeItem(APP_CONFIG.storageKeys.authKey);
+    return false;
+  }
+
+  // 3. Fallback: verificar localStorage
+  return !!localStorage.getItem(APP_CONFIG.storageKeys.authKey);
 }
 
 export function getCurrentUser() {
