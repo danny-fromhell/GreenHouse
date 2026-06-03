@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuarios | Green House</title>
+
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+<header class="header">
+  <nav class="navbar">
+    <a href="index.html" class="brand">
+      <img src="assets/img/logo.png" alt="Logo Green House" class="logo">
+      <span>Green House</span>
+    </a>
+  </nav>
+</header>
+
+<main class="dashboard-layout">
+
+  <aside class="sidebar">
+    <h2>Admin Panel</h2>
+    <p>Green House</p>
+
+    <nav>
+      <a href="dashboard.html">Overview</a>
+      <a href="users.html" class="active">Usuarios</a>
+      <a href="#" id="logoutBtnSidebar">Cerrar sesión</a>
+    </nav>
+  </aside>
+
+  <section class="dashboard-content">
+
+    <h1>Usuarios Registrados</h1>
+
+    <div id="usersContainer"></div>
+
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p class="footer-copy">
+    © 2026 Green House. Todos los derechos reservados.
+  </p>
+</footer>
+
+<script type="module" src="./js/main.js"></script>
+
+</body>
+</html>
