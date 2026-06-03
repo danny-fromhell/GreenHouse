@@ -27,6 +27,7 @@ export async function initUsersPage() {
     }
 
     renderUsers(users);
+    setupAddUser(users);
 
   } catch (error) {
 
@@ -34,4 +35,47 @@ export async function initUsersPage() {
 
   }
 
+}
+
+function setupAddUser(users) {
+  const addBtn = document.getElementById("addUserBtn");
+  const form = document.getElementById("userFormContainer");
+  const saveBtn = document.getElementById("saveUserBtn");
+
+  if (!addBtn || !form || !saveBtn) return;
+
+  addBtn.addEventListener("click", () => {
+    form.style.display = form.style.display === "none" ? "block" : "none";
+  });
+
+  saveBtn.addEventListener("click", () => {
+    const name = document.getElementById("newName").value.trim();
+    const email = document.getElementById("newEmail").value.trim();
+    const password = document.getElementById("newPassword").value.trim();
+
+    if (!name || !email || !password) {
+      alert("Completa todos los campos");
+      return;
+    }
+
+    const newUser = {
+      id: Date.now(),
+      name,
+      email,
+      password,
+      role: "admin",
+      created_at: new Date().toISOString().split("T")[0]
+    };
+
+    const updatedUsers = [...users, newUser];
+
+    localStorage.setItem(
+      "greenhouse_users",
+      JSON.stringify(updatedUsers)
+    );
+
+    renderUsers(updatedUsers);
+
+    form.style.display = "none";
+  });
 }
