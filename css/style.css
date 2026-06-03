@@ -1106,3 +1106,32 @@ body[data-theme="dark"] .alert-error {
 .btn-delete:hover {
   background: #b91c1c;
 }
+
+
+@media (max-width: 768px) {
+  .dashboard-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    position: relative;
+    width: 100%;
+  }
+
+  .dashboard-content {
+    flex: 1;
+  }
+
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+  }
+}
+
+
+  .dashboard-layout {
+    min-height: 100vh;
+}
