@@ -3,77 +3,78 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Usuarios | Green House</title>
 
   <link rel="stylesheet" href="./css/style.css">
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  >
 </head>
 
 <body>
 
-<header class="header">
-  <nav class="navbar">
-    <a href="index.html" class="brand">
-      <img src="assets/img/logo.png" alt="Logo Green House" class="logo">
-      <span>Green House</span>
-    </a>
+  <header class="header">
+    <nav class="navbar">
+      <a href="index.html" class="brand">
+        <img src="assets/img/logo.png" alt="Logo Green House" class="logo">
+        <span>Green House</span>
+      </a>
 
-    <button class="menu-button" id="menuButton">☰</button>
+      <button class="menu-button" id="menuButton">☰</button>
 
-    <div class="nav-menu" id="navMenu">
+      <div class="nav-menu" id="navMenu">
         <a href="index.html">Inicio</a>
         <a href="plants.html">Plantas</a>
         <a href="dashboard.html" class="active">Dashboard</a>
-      <button class="theme-toggle" id="themeToggle">☾</button>
-    </div>
-  </nav>
-</header>
-
-<main class="dashboard-layout">
-
-  <aside class="sidebar">
-    <h2>Admin Panel</h2>
-    <p>Green House</p>
-
-    <nav>
-      <a href="dashboard.html">Overview</a>
-      <a href="users.html" class="active">Usuarios</a>
-      <a href="#" id="logoutBtnSidebar">Cerrar sesión</a>
+        <button class="theme-toggle" id="themeToggle">☾</button>
+      </div>
     </nav>
-  </aside>
+  </header>
 
-  <section class="dashboard-content">
-    <button id="addUserBtn" class="btn-primary">
-  + Agregar administrador
-</button>
+  <main class="dashboard-layout">
 
-<div id="userFormContainer" style="display:none; margin-top:20px;">
-    <h3>Nuevo administrador</h3>
+    <aside class="sidebar">
+      <h2>Admin Panel</h2>
+      <p>Green House</p>
 
-      <input type="text" id="newName" placeholder="Nombre">
-      <input type="email" id="newEmail" placeholder="Email">
-      <input type="password" id="newPassword" placeholder="Password">
+      <nav>
+        <a href="dashboard.html">Overview</a>
+        <a href="users.html" class="active">Usuarios</a>
+        <a href="#" id="logoutBtnSidebar">Cerrar sesión</a>
+      </nav>
+    </aside>
 
-      <button id="saveUserBtn" class="btn-primary">Guardar</button>
-    
-    </div>
+    <section class="dashboard-content">
 
-    <h1>Usuarios Registrados</h1>
+      <div id="userFormContainer" class="user-form-container">
+        <h3>Nuevo administrador</h3>
 
-    <div id="usersContainer"></div>
+        <div class="user-form-grid">
+          <input type="text" id="newName" placeholder="Nombre">
+          <input type="email" id="newEmail" placeholder="Email">
+          <input type="password" id="newPassword" placeholder="Password">
+        </div>
 
-  </section>
+        <button id="saveUserBtn" class="btn-primary">
+          Guardar
+        </button>
+      </div>
 
-</main>
+      <div id="usersContainer"></div>
 
-<footer class="footer">
-  <p class="footer-copy">
-    © 2026 Green House. Todos los derechos reservados.
-  </p>
-</footer>
+    </section>
 
-<script type="module" src="./js/main.js"></script>
+  </main>
+
+  <footer class="footer">
+    <p class="footer-copy">
+      © 2026 Green House. Todos los derechos reservados.
+    </p>
+  </footer>
+
+  <script type="module" src="./js/main.js"></script>
 
 </body>
 </html>

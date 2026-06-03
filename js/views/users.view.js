@@ -1,65 +1,112 @@
 export function renderUsers(users) {
-
   const container = document.getElementById("usersContainer");
 
   if (!container) return;
 
   container.innerHTML = `
-    <table class="users-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Email</th>
-          <th>Rol</th>
-          <th>Fecha Registro</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
+  <section class="users-page">
+    <div class="users-toolbar">
+      <div>
+        <h1>Usuarios</h1>
+        <p>Administradores registrados en GreenHouse.</p>
+      </div>
 
-      <tbody>
+      <button class="btn-primary">
+        + Agregar administrador
+      </button>
+    </div>
 
-      ${users.map(user => `
-        <tr>
-          <td>${user.id}</td>
-          <td>${user.name}</td>
-          <td>${user.email}</td>
-          <td>${user.role}</td>
-          <td>${user.created_at}</td>
+    <div class="users-summary">
+      <div class="user-summary-card">
+        <span>Total usuarios</span>
+        <strong>${users.length}</strong>
+      </div>
 
-          <td>
-            <button class="btn-delete" data-id="${user.id}">
-              Eliminar
-            </button>
-          </td>
-        </tr>
-      `).join("")}
+      <div class="user-summary-card">
+        <span>Administradores</span>
+        <strong>${users.filter(user => user.role === "admin").length}</strong>
+      </div>
 
-      </tbody>
-    </table>
-  `;
+      <div class="user-summary-card">
+        <span>Estado</span>
+        <strong>Activo</strong>
+      </div>
+    </div>
 
-  const deleteButtons =
-    container.querySelectorAll(".btn-delete");
+    <div class="users-grid">
+      ${users.map(user => {
+        const initials = getInitials(user.name);
+
+        return `
+          <article class="user-card">
+            <div class="user-card-header">
+              <div class="user-avatar">${initials}</div>
+
+              <div class="user-main-info">
+                <h3>${user.name}</h3>
+                <p>${user.email}</p>
+              </div>
+            </div>
+
+            <div class="user-card-body">
+              <div>
+                <span>Rol</span>
+                <strong>${user.role}</strong>
+              </div>
+
+              <div>
+                <span>Fecha de registro</span>
+                <strong>${formatDate(user.created_at)}</strong>
+              </div>
+            </div>
+
+            <div class="user-card-actions">
+              <button class="btn-edit" data-id="${user.id}">
+                Editar
+              </button>
+
+              <button class="btn-delete" data-id="${user.id}">
+                Eliminar
+              </button>
+            </div>
+          </article>
+        `;
+      }).join("")}
+    </div>
+  </section>
+`;
+
+  const deleteButtons = container.querySelectorAll(".btn-delete");
 
   deleteButtons.forEach(button => {
-
     button.addEventListener("click", () => {
-
-      const userId = Number(
-        button.dataset.id
-      );
-
+      const userId = Number(button.dataset.id);
       deleteUser(userId);
-
     });
-
   });
+}
 
+function getInitials(name) {
+  return name
+    .trim()
+    .split(" ")
+    .map(word => word[0])
+    .join("")
+    .substring(0, 2)
+    .toUpperCase();
+}
+
+function formatDate(date) {
+  const parsedDate = new Date(date);
+
+  return parsedDate.toLocaleDateString("es-MX", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  });
 }
 
 function deleteUser(userId) {
-
   const confirmDelete = confirm(
     "¿Deseas eliminar este usuario?"
   );
@@ -80,5 +127,4 @@ function deleteUser(userId) {
   );
 
   renderUsers(updatedUsers);
-
 }
