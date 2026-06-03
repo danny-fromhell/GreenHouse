@@ -5,6 +5,7 @@ import { initDashboardPage } from "./controllers/dashboard.controller.js";
 import { getCurrentPage } from "./utils/utils.js";
 import { APP_CONFIG } from "./config/config.js";
 import { isAuthenticated, getCurrentUser, logout } from "./services/auth.service.js";
+import { initUsersPage } from "./controllers/users.controller.js";
 
 function initTheme() {
   const themeButton = document.querySelector("#themeToggle");
@@ -159,6 +160,7 @@ function initApp() {
 
   const currentPage = getCurrentPage();
 
+
   if (currentPage === "index.html") {
     renderHome();
   }
@@ -174,6 +176,10 @@ function initApp() {
   if (currentPage === "dashboard.html") {
     initDashboardPage();
   }
+
+  if (currentPage === "users.html") {
+  initUsersPage();
+}
 }
 
 document.addEventListener("DOMContentLoaded", initApp);
