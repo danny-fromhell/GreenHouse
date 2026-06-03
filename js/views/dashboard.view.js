@@ -19,6 +19,7 @@ export function renderDashboard(plants) {
 
       <nav>
         <a href="#" class="active">Overview</a>
+        <a href="users.html">Usuarios</a>
         <a href="#" id="logoutBtnSidebar">Cerrar sesión</a>
       </nav>
     </aside>
