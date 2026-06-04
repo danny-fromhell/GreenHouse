@@ -1,6 +1,7 @@
 import { APP_CONFIG } from "../config/config.js";
+import { loginWithFirestore } from "../firebase/auth.js";
 
-// ── Helpers de cookies ─────────────────────────────────────────────────
+// Helpers de cookies 
 function setCookie(name, value, days) {
   const expires = new Date();
   expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
@@ -23,7 +24,7 @@ function deleteCookie(name) {
   document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;SameSite=Strict`;
 }
 
-// ── JWT simulado ───────────────────────────────────────────────────────
+// JWT simulado
 
 function base64url(str) {
   return btoa(unescape(encodeURIComponent(str)))
@@ -73,25 +74,10 @@ const COOKIE_DAYS = 1;
 // Servicio de autenticación mejorado con JSON local
 export async function login(email, password) {
   try {
-    // Obtener usuarios del archivo JSON local
-    const response = await fetch(APP_CONFIG.localData.users);
-    const data = await response.json();
-    const users = data.users;
-    
-    // Buscar usuario por email y password
-    const user = users.find(u => u.email === email && u.password === password);
-    
-    if (user) {
-      // Crear objeto de usuario sin la contraseña
-      const currentUser = {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-        created_at: user.created_at
-      };
-      
-      
+    // Validar credenciales con Firestore
+    const currentUser = await loginWithFirestore(email, password);
+
+    if (currentUser) {
       // Generar JWT simulado
 const fakeJwt = generateFakeJWT(currentUser);
 
@@ -107,7 +93,7 @@ console.log("Payload decodificado:", decodeJWTPayload(fakeJwt));
       return {
         success: true,
         user: currentUser,
-        role: user.role,
+        role: currentUser.role,
         token: fakeJwt
       };
     } else {

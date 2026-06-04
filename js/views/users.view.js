@@ -1,6 +1,5 @@
-export function renderUsers(users) {
+export function renderUsers(users, handlers = {}) {
   const container = document.getElementById("usersContainer");
-
   if (!container) return;
 
   container.innerHTML = `
@@ -11,7 +10,7 @@ export function renderUsers(users) {
         <p>Administradores registrados en GreenHouse.</p>
       </div>
 
-      <button class="btn-primary">
+      <button class="btn-primary" id="addUserBtn">
         + Agregar administrador
       </button>
     </div>
@@ -76,18 +75,23 @@ export function renderUsers(users) {
   </section>
 `;
 
-  const deleteButtons = container.querySelectorAll(".btn-delete");
+  // Botón agregar
+  const addBtn = container.querySelector("#addUserBtn");
+  addBtn?.addEventListener("click", () => handlers.onAdd?.());
 
-  deleteButtons.forEach(button => {
-    button.addEventListener("click", () => {
-      const userId = Number(button.dataset.id);
-      deleteUser(userId);
-    });
+  // Botones editar (el id es un string de Firestore,no se convierte a número)
+  container.querySelectorAll(".btn-edit").forEach(button => {
+    button.addEventListener("click", () => handlers.onEdit?.(button.dataset.id));
+  });
+
+  // Botones eliminar
+  container.querySelectorAll(".btn-delete").forEach(button => {
+    button.addEventListener("click", () => handlers.onDelete?.(button.dataset.id));
   });
 }
 
 function getInitials(name) {
-  return name
+  return (name || "")
     .trim()
     .split(" ")
     .map(word => word[0])
@@ -97,6 +101,7 @@ function getInitials(name) {
 }
 
 function formatDate(date) {
+  if (!date) return "—";
   const parsedDate = new Date(date);
 
   return parsedDate.toLocaleDateString("es-MX", {
@@ -104,27 +109,4 @@ function formatDate(date) {
     month: "short",
     year: "numeric"
   });
-}
-
-function deleteUser(userId) {
-  const confirmDelete = confirm(
-    "¿Deseas eliminar este usuario?"
-  );
-
-  if (!confirmDelete) return;
-
-  const users = JSON.parse(
-    localStorage.getItem("greenhouse_users")
-  ) || [];
-
-  const updatedUsers = users.filter(
-    user => user.id !== userId
-  );
-
-  localStorage.setItem(
-    "greenhouse_users",
-    JSON.stringify(updatedUsers)
-  );
-
-  renderUsers(updatedUsers);
 }
