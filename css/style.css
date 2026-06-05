@@ -1372,8 +1372,8 @@ body[data-theme="dark"] .btn-delete:hover {
   background: var(--bg-card, #fff);
   border-radius: 12px;
   padding: 2rem;
-  width: 100%;
-  max-width: 480px;
+  width: 90%;
+  max-width: 560px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.18);
   display: flex;
   flex-direction: column;
@@ -1381,7 +1381,11 @@ body[data-theme="dark"] .btn-delete:hover {
 }
 
 .modal-box h3 {
-  .modal-box .user-form-grid {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.modal-box .user-form-grid {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
@@ -1395,8 +1399,24 @@ body[data-theme="dark"] .btn-delete:hover {
   font-size: 0.95rem;
   box-sizing: border-box;
 }
-  margin: 0;
-  font-size: 1.2rem;
+
+[data-theme="dark"] .modal-box,
+.dark .modal-box {
+  background: #1e1e1e;
+  color: #fff;
+}
+
+[data-theme="dark"] .modal-box .user-form-grid input,
+.dark .modal-box .user-form-grid input {
+  background: #2a2a2a;
+  border-color: #444;
+  color: #fff;
+}
+
+[data-theme="dark"] .btn-secondary,
+.dark .btn-secondary {
+  border-color: #555;
+  color: #fff;
 }
 
 .modal-actions {
