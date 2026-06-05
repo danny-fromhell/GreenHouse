@@ -1,6 +1,66 @@
 # Green House
 
-Green House es una aplicación web enfocada en la consulta y visualización de información sobre plantas, sus características y cuidados. El proyecto utiliza una arquitectura MVC con HTML, CSS y JavaScript, además de consumo de API REST y autenticación JWT para el módulo administrativo.
+---
+
+# Flujo de trabajo con Git y ramas
+
+Para mantener una organización adecuada del proyecto y cumplir con el requisito de utilizar una branch principal (`main`) y Pull Requests por integrante, se implementó la siguiente estructura de ramas:
+
+## Estructura de ramas
+
+```txt id="x1zw95"
+main
+└── dev
+    ├── dannyDev
+    ├── abiDev
+    ├── tonaDev
+    ├── flaviaDev
+    ├── axelDev
+    └── luisDev
+```
+
+## Descripción de ramas
+
+### `main`
+
+Contiene la versión final y estable del proyecto.
+
+### `dev`
+
+Rama de integración general donde se realizan las pruebas y merges del trabajo del equipo antes de pasar a producción.
+
+### Ramas individuales
+
+Cada integrante trabaja únicamente en su propia rama para evitar conflictos y mantener organizado el desarrollo.
+
+| Rama      | Integrante |
+| --------- | ---------- |
+| dannyDev  | Danny      |
+| abiDev    | Abi        |
+| tonaDev   | Tona       |
+| flaviaDev | Flavia     |
+| axelDev   | Axel       |
+| luisDev   | Luis       |
+
+---
+
+# Flujo de trabajo
+
+1. Cada integrante desarrolla funcionalidades en su propia rama.
+2. Los cambios se suben al repositorio mediante commits.
+3. Se crea un Pull Request hacia la rama `dev`.
+4. Después de validar la integración y funcionamiento del proyecto, los cambios de `dev` se integran a `main`.
+
+---
+
+# Reglas de trabajo
+
+* No trabajar directamente sobre `main`
+* Todos los cambios deben pasar por Pull Request
+* Mantener sincronizada la rama personal con `dev`
+* Realizar commits descriptivos y organizados
+* Verificar funcionamiento antes de hacer merge
+
 
 ---
 
@@ -12,7 +72,7 @@ Desarrollar una plataforma web dinámica que permita:
 * Visualizar cuidados y características
 * Consumir una API REST
 * Implementar autenticación JWT
-* Utilizar almacenamiento en caché
+* Utilizar cookies
 * Mostrar métricas en un dashboard administrativo
 
 ---
@@ -32,9 +92,8 @@ Desarrollar una plataforma web dinámica que permita:
 
 * Inicio de sesión mediante JWT
 * Dashboard de métricas
-* Gestión de plantas
 * Visualización de estadísticas
-* Monitoreo de interacciones y ventas
+* Monitoreo de interacciones 
 
 ---
 
@@ -55,13 +114,11 @@ Desarrollar una plataforma web dinámica que permita:
 * Git
 * GitHub
 * Jira
-* Figma
 
 ## Extras
 
 * API REST
 * JWT Authentication
-* LocalStorage
 * JSON
 
 ---
@@ -110,14 +167,14 @@ GreenHouse/
 
 # Integrantes del equipo
 
-| Integrante | Responsabilidad                         |
-| ---------- | --------------------------------------- |
-| Danny      | Diseño de FrontEnd y repositorio GitHub |
-| Abi        | Arquitectura MVC                        |
-| Tona       | Configuración, datos y caché            |
-| Flavia     | Lógica principal e interfaz             |
-| Axel       | Utilidades y apoyo                      |
-| Luis       | Integración y pruebas                   |
+| Integrante | Responsabilidad                                                         |
+| ---------- | ----------------------------------------------------------------------- |
+| Danny      | Arquitectura MVC, lógica principal y conexion API REST.                 |
+| Abi        | Sketch del sitio y dasboard, pantalla de usuarios.                      |
+| Flavia     | Datos y cookies.                                                        |
+| Tona       | Creación de BD y conexion de BD.                                        |
+| Axel       | Autenticacion JWT.                                                      |
+| Luis       | Integración, pruebas y correciones.                                     |
 
 ---
 

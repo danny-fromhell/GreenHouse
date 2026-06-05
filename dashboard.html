@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Green House</title>
+
+  <link rel="icon" type="image/x-icon" href="./assets/icons/favicon.ico">
+  <link rel="icon" type="image/svg+xml" href="./assets/icons/favicon.svg">
+  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png">
+  <link rel="manifest" href="./assets/icons/site.webmanifest">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+  <header class="header">
+    <nav class="navbar">
+      <a href="index.html" class="brand">
+        <img src="assets/img/logo.png" alt="Logo Green House" class="logo">
+        <span>Green House</span>
+      </a>
+
+      <button class="menu-button" id="menuButton">☰</button>
+
+      <div class="nav-menu" id="navMenu">
+        <a href="index.html">Inicio</a>
+        <a href="plants.html">Plantas</a>
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <button class="theme-toggle" id="themeToggle">☾</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="dashboard-layout" id="dashboardApp">
+    <aside class="sidebar">
+      <h2>Admin Panel</h2>
+      <p>Green House</p>
+      <nav>
+        <a href="#" class="active">Overview</a>
+        <a href="users.html">Usuarios</a>
+        <a href="#" id="logoutBtnSidebar">Cerrar sesión</a>
+      </nav>
+    </aside>
+
+    <section class="dashboard-content">
+      <h1>Dashboard</h1>
+      <p>Bienvenido de nuevo, <span id="userNameDisplay">administrador</span></p>
+
+      <div id="dashboardError" class="error-container" style="display: none;"></div>
+
+      <!-- Fila 1: Tarjetas principales -->
+      <div class="metrics-grid">
+        <article class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-seedling"></i>
+          </div>
+          <div class="stat-info">
+            <span>Total Plantas</span>
+            <strong class="stat-number" id="statTotalPlants">0</strong>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-calendar-week"></i>
+          </div>
+          <div class="stat-info">
+            <span>Visitas Semanales</span>
+            <strong class="stat-number" id="statVisitasSemanales">0</strong>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-calendar-day"></i>
+          </div>
+          <div class="stat-info">
+            <span>Visitas Diarias</span>
+            <strong class="stat-number" id="statVisitasDiarias">0</strong>
+          </div>
+        </article>
+      </div>
+
+      <!-- Fila 2: Gráficas principales -->
+      <div class="dashboard-grid">
+        <article class="panel">
+          <h2>📈 Usuarios Registrados (Últimos 6 meses)</h2>
+          <canvas id="usersChart" style="height: 260px; width: 100%;"></canvas>
+        </article>
+
+        <article class="panel">
+          <h2>🏆 Plantas más populares</h2>
+          <div id="topPlantsList" class="popular-list">
+            <div class="loading">Cargando datos...</div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Fila 3: Top Horarios y Top Tipos de Plantas -->
+      <div class="dashboard-grid">
+        <article class="panel">
+          <h2>⏰ Top 5 Horarios de Consultas</h2>
+          <div id="topHorariosList" class="top-horarios-list">
+            <div class="loading">Cargando datos...</div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <h2>🌿 Top Tipos de Plantas más consultadas</h2>
+          <div id="topTiposList" class="top-tipos-list">
+            <div class="loading">Cargando datos...</div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Fila 4: Gráfica de Tipos de Plantas -->
+      <div class="full-width-panel">
+        <article class="panel">
+          <h2>📊 Distribución de consultas por tipo de planta</h2>
+          <canvas id="tiposChart" style="height: 300px; width: 100%;"></canvas>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p class="footer-copy">© 2026 Green House. Todos los derechos reservados.</p>
+  </footer>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+
+</html>

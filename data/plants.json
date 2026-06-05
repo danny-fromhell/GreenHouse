@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "name": "Monstera Deliciosa",
+    "scientificName": "Monstera deliciosa",
+    "category": "Tropical",
+    "difficulty": "Fácil",
+    "description": "Planta tropical de hojas grandes y perforadas. Perfecta para interiores luminosos.",
+    "care": "Requiere luz indirecta, riego moderado y humedad ambiental.",
+    "image": "assets/img/monstera_deliciosa.jpeg",
+    "views": 1245,
+    "sales": 89
+  },
+  {
+    "id": 2,
+    "name": "Pothos Dorado",
+    "scientificName": "Epipremnum aureum",
+    "category": "Colgante",
+    "difficulty": "Fácil",
+    "description": "Planta colgante resistente que purifica el aire. Ideal para principiantes.",
+    "care": "Tolera poca luz y necesita riego cuando el sustrato esté seco.",
+    "image": "assets/img/pothos_dorado.jpeg",
+    "views": 1120,
+    "sales": 76
+  },
+  {
+    "id": 3,
+    "name": "Suculentas Mixtas",
+    "scientificName": "Crassulaceae family",
+    "category": "Suculenta",
+    "difficulty": "Muy Fácil",
+    "description": "Colección de suculentas de bajo mantenimiento para espacios pequeños.",
+    "care": "Necesitan mucha luz y poco riego.",
+    "image": "assets/img/suculentas_mixtas.jpeg",
+    "views": 980,
+    "sales": 134
+  },
+  {
+    "id": 4,
+    "name": "Ficus Lyrata",
+    "scientificName": "Ficus lyrata",
+    "category": "Árbol",
+    "difficulty": "Moderado",
+    "description": "Árbol de interior con hojas en forma de violín. Decorativo y elegante.",
+    "care": "Prefiere luz indirecta brillante y riego moderado.",
+    "image": "assets/img/ficus_lyrata.jpeg",
+    "views": 856,
+    "sales": 45
+  },
+  {
+    "id": 5,
+    "name": "Sansevieria",
+    "scientificName": "Dracaena trifasciata",
+    "category": "Interior",
+    "difficulty": "Muy Fácil",
+    "description": "Planta resistente conocida como lengua de suegra. Excelente purificador de aire.",
+    "care": "Tolera poca luz y requiere riego escaso.",
+    "image": "assets/img/sansevieria.jpeg",
+    "views": 742,
+    "sales": 67
+  },
+  {
+    "id": 6,
+    "name": "Cactus Dorado",
+    "scientificName": "Echinocactus grusonii",
+    "category": "Cactus",
+    "difficulty": "Muy Fácil",
+    "description": "Cactus esférico de color dorado. Requiere mínimo cuidado y mucho sol.",
+    "care": "Necesita luz directa y riego muy espaciado.",
+    "image": "assets/img/cactus_dorado.jpeg",
+    "views": 690,
+    "sales": 52
+  }
+]
