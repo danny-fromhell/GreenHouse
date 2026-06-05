@@ -75,14 +75,21 @@ export function renderUsers(users, handlers = {}) {
   </section>
 `;
 
-  // Botón agregar
-  const addBtn = container.querySelector("#addUserBtn");
-  addBtn?.addEventListener("click", () => handlers.onAdd?.());
+ // Botón agregar
+const addBtn = container.querySelector("#addUserBtn");
 
-  // Botones editar (el id es un string de Firestore,no se convierte a número)
-  container.querySelectorAll(".btn-edit").forEach(button => {
-    button.addEventListener("click", () => handlers.onEdit?.(button.dataset.id));
+addBtn?.addEventListener("click", () => {
+  document.getElementById("userFormTitle").textContent = "Nuevo administrador";
+  handlers.onAdd?.();
+});
+
+// Botones editar
+container.querySelectorAll(".btn-edit").forEach(button => {
+  button.addEventListener("click", () => {
+    document.getElementById("userFormTitle").textContent = "Editar administrador";
+    handlers.onEdit?.(button.dataset.id);
   });
+});
 
   // Botones eliminar
   container.querySelectorAll(".btn-delete").forEach(button => {
