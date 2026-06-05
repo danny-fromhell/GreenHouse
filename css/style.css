@@ -1356,3 +1356,66 @@ body[data-theme="dark"] .btn-delete:hover {
 .dashboard-layout {
   min-height: 100vh;
 }
+
+/* Modal de usuarios */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background: var(--bg-card, #fff);
+  border-radius: 12px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.modal-box h3 {
+  .modal-box .user-form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.modal-box .user-form-grid input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  border: 1.5px solid #ccc;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: flex-end;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1.5px solid #ccc;
+  color: inherit;
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s;
+}
+
+.btn-secondary:hover {
+  background: rgba(0,0,0,0.06);
+}
