@@ -51,19 +51,6 @@
 
     <section class="dashboard-content">
 
-      <div id="userFormContainer" class="user-form-container">
-        <h3>Nuevo administrador</h3>
-
-        <div class="user-form-grid">
-          <input type="text" id="newName" placeholder="Nombre">
-          <input type="email" id="newEmail" placeholder="Email">
-          <input type="password" id="newPassword" placeholder="Password">
-        </div>
-
-        <button id="saveUserBtn" class="btn-primary">
-          Guardar
-        </button>
-      </div>
 
       <div id="usersContainer"></div>
 
@@ -78,6 +65,24 @@
   </footer>
 
   <script type="module" src="./js/main.js"></script>
+
+<!-- Modal editar/crear usuario -->
+<div id="userModalOverlay" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <h3 id="userFormTitle">Nuevo administrador</h3>
+
+    <div class="user-form-grid">
+      <input type="text" id="newName" placeholder="Nombre">
+      <input type="email" id="newEmail" placeholder="Email">
+      <input type="password" id="newPassword" placeholder="Password">
+    </div>
+
+    <div class="modal-actions">
+      <button id="saveUserBtn" class="btn-primary">Guardar</button>
+      <button id="cancelUserBtn" class="btn-secondary">Cancelar</button>
+    </div>
+  </div>
+</div>
 
 </body>
 

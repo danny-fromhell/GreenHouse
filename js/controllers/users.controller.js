@@ -45,21 +45,16 @@ async function refresh() {
   });
 }
 
-// Formulario pa crear y editar
 function setupForm() {
   const saveBtn = document.getElementById("saveUserBtn");
+  const cancelBtn = document.getElementById("cancelUserBtn");
   saveBtn?.addEventListener("click", handleSave);
+  cancelBtn?.addEventListener("click", closeForm);
 }
 
 function toggleForm() {
-  const form = document.getElementById("userFormContainer");
-  if (!form) return;
-
-  const willShow = form.style.display !== "block";
-  form.style.display = willShow ? "block" : "none";
-
-  // Si se va a ocultar el formulario, resetearlo a modo crear
-  if (!willShow) resetForm();
+  resetForm();
+  openModal();
 }
 
 async function handleSave() {
@@ -119,8 +114,7 @@ function handleEdit(id) {
   if (heading) heading.textContent = "Editar usuario";
   if (saveBtn) saveBtn.textContent = "Actualizar";
 
-  const form = document.getElementById("userFormContainer");
-  if (form) form.style.display = "block";
+  openModal();
   document.getElementById("newPassword").placeholder = "Nueva contraseña (opcional)";
 }
 
@@ -137,8 +131,7 @@ async function handleDelete(id) {
 }
 
 function closeForm() {
-  const form = document.getElementById("userFormContainer");
-  if (form) form.style.display = "none";
+  closeModal();
   resetForm();
 }
 
@@ -155,8 +148,18 @@ function resetForm() {
     passwordInput.placeholder = "Password";
   }
 
-  const heading = document.querySelector("#userFormContainer h3");
+  const heading = document.getElementById("userFormTitle");
   const saveBtn = document.getElementById("saveUserBtn");
   if (heading) heading.textContent = "Nuevo administrador";
   if (saveBtn) saveBtn.textContent = "Guardar";
+}
+
+function openModal() {
+  const overlay = document.getElementById("userModalOverlay");
+  if (overlay) overlay.style.display = "flex";
+}
+
+function closeModal() {
+  const overlay = document.getElementById("userModalOverlay");
+  if (overlay) overlay.style.display = "none";
 }
