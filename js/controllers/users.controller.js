@@ -108,14 +108,15 @@ function handleEdit(id) {
   document.getElementById("newEmail").value = user.email || "";
   document.getElementById("newPassword").value = "";
 
-  // Cambiar textos a modo edición
-  const heading = document.querySelector("#userFormContainer h3");
+  const heading = document.getElementById("userFormTitle");
   const saveBtn = document.getElementById("saveUserBtn");
-  if (heading) heading.textContent = "Editar usuario";
+  const passwordInput = document.getElementById("newPassword");
+
+  if (heading) heading.textContent = "Editar administrador";
   if (saveBtn) saveBtn.textContent = "Actualizar";
+  if (passwordInput) passwordInput.placeholder = "Nueva contraseña";
 
   openModal();
-  document.getElementById("newPassword").placeholder = "Nueva contraseña (opcional)";
 }
 
 async function handleDelete(id) {
@@ -145,7 +146,7 @@ function resetForm() {
   if (emailInput) emailInput.value = "";
   if (passwordInput) {
     passwordInput.value = "";
-    passwordInput.placeholder = "Password";
+    passwordInput.placeholder = "Contraseña";
   }
 
   const heading = document.getElementById("userFormTitle");
