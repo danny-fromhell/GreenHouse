@@ -1,11 +1,12 @@
 // ============================================================================
-//  Se hace todo el CRUD de usuarios usando Firestore (js/firebase/firestore.js).
-//  - Carga los usuarios desde Firestore.
-//  - Se pueden crear, editar y eliminar con el formulario de users.html.
+// CRUD de perfiles de usuario utilizando Firestore.
+// - Carga los perfiles desde Firestore.
+// - Permite crear, editar y eliminar perfiles desde users.html.
 // ============================================================================
 
 import { APP_CONFIG } from "../config/config.js";
 import { renderUsers } from "../views/users.view.js";
+
 import {
   getUsers,
   getUserByEmail,
@@ -15,15 +16,14 @@ import {
   seedUsersIfEmpty
 } from "../firebase/firestore.js";
 
-// Cache de los usuarios cargados (para prellenar el formulario al editar)
+// Caché de perfiles cargados
 let usersCache = [];
 
-// Id del usuario en edición. null = el formulario está en modo "crear".
+// ID del perfil en edición. null = modo creación.
 let editingId = null;
 
 export async function initUsersPage() {
   try {
-    // Aqui si Firestore no tiene usuarios, los carga del JSON.
     await seedUsersIfEmpty(APP_CONFIG.localData.users);
 
     await refresh();
@@ -34,7 +34,7 @@ export async function initUsersPage() {
   }
 }
 
-// Lee de Firestore y vuelve a generar la lista
+// Obtiene los perfiles desde Firestore y actualiza la vista.
 async function refresh() {
   usersCache = await getUsers();
 
@@ -48,6 +48,7 @@ async function refresh() {
 function setupForm() {
   const saveBtn = document.getElementById("saveUserBtn");
   const cancelBtn = document.getElementById("cancelUserBtn");
+
   saveBtn?.addEventListener("click", handleSave);
   cancelBtn?.addEventListener("click", closeForm);
 }
@@ -60,34 +61,31 @@ function toggleForm() {
 async function handleSave() {
   const name = document.getElementById("newName").value.trim();
   const email = document.getElementById("newEmail").value.trim();
-  const password = document.getElementById("newPassword").value.trim();
 
   if (!name || !email) {
-    alert("Completa al menos nombre y email.");
+    alert("Completa nombre y correo electrónico.");
     return;
   }
 
   try {
     if (editingId) {
-      // Editar: solo actualizar los campos que se cambiaron (si se escribió una nueva contraseña, se actualiza, sino se mantiene la misma) 
-      const changes = { name, email };
-      if (password) changes.password = password;
-      await updateUser(editingId, changes);
+      await updateUser(editingId, {
+        name,
+        email
+      });
     } else {
-      // Crear
-      if (!password) {
-        alert("La contraseña es obligatoria para un usuario nuevo.");
-        return;
-      }
-
-      // Pa evitar emails duplicados
       const existing = await getUserByEmail(email);
+
       if (existing) {
-        alert("Ya existe un usuario con ese email.");
+        alert("Ya existe un usuario con ese correo.");
         return;
       }
 
-      await createUser({ name, email, password, role: "admin" });
+      await createUser({
+        name,
+        email,
+        role: "admin"
+      });
     }
 
     closeForm();
@@ -100,27 +98,42 @@ async function handleSave() {
 
 function handleEdit(id) {
   const user = usersCache.find((u) => u.id === id);
-  if (!user) return;
+
+  if (!user) {
+    return;
+  }
 
   editingId = id;
 
-  document.getElementById("newName").value = user.name || "";
-  document.getElementById("newEmail").value = user.email || "";
-  document.getElementById("newPassword").value = "";
+  const nameInput = document.getElementById("newName");
+  const emailInput = document.getElementById("newEmail");
+
+  if (nameInput) {
+    nameInput.value = user.name || "";
+  }
+
+  if (emailInput) {
+    emailInput.value = user.email || "";
+  }
 
   const heading = document.getElementById("userFormTitle");
   const saveBtn = document.getElementById("saveUserBtn");
-  const passwordInput = document.getElementById("newPassword");
 
-  if (heading) heading.textContent = "Editar administrador";
-  if (saveBtn) saveBtn.textContent = "Actualizar";
-  if (passwordInput) passwordInput.placeholder = "Nueva contraseña";
+  if (heading) {
+    heading.textContent = "Editar administrador";
+  }
+
+  if (saveBtn) {
+    saveBtn.textContent = "Actualizar";
+  }
 
   openModal();
 }
 
 async function handleDelete(id) {
-  if (!confirm("¿Deseas eliminar este usuario?")) return;
+  if (!confirm("¿Deseas eliminar este usuario?")) {
+    return;
+  }
 
   try {
     await deleteUserById(id);
@@ -141,26 +154,39 @@ function resetForm() {
 
   const nameInput = document.getElementById("newName");
   const emailInput = document.getElementById("newEmail");
-  const passwordInput = document.getElementById("newPassword");
-  if (nameInput) nameInput.value = "";
-  if (emailInput) emailInput.value = "";
-  if (passwordInput) {
-    passwordInput.value = "";
-    passwordInput.placeholder = "Contraseña";
+
+  if (nameInput) {
+    nameInput.value = "";
+  }
+
+  if (emailInput) {
+    emailInput.value = "";
   }
 
   const heading = document.getElementById("userFormTitle");
   const saveBtn = document.getElementById("saveUserBtn");
-  if (heading) heading.textContent = "Nuevo administrador";
-  if (saveBtn) saveBtn.textContent = "Guardar";
+
+  if (heading) {
+    heading.textContent = "Nuevo administrador";
+  }
+
+  if (saveBtn) {
+    saveBtn.textContent = "Guardar";
+  }
 }
 
 function openModal() {
   const overlay = document.getElementById("userModalOverlay");
-  if (overlay) overlay.style.display = "flex";
+
+  if (overlay) {
+    overlay.style.display = "flex";
+  }
 }
 
 function closeModal() {
   const overlay = document.getElementById("userModalOverlay");
-  if (overlay) overlay.style.display = "none";
+
+  if (overlay) {
+    overlay.style.display = "none";
+  }
 }

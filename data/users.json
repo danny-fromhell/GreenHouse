@@ -3,7 +3,6 @@
     {
       "id": 1,
       "email": "admin@greenhouse.com",
-      "password": "12345678",
       "role": "admin",
       "name": "Administrador",
       "created_at": "2024-01-15"
@@ -11,7 +10,6 @@
     {
       "id": 2,
       "email": "juan@example.com",
-      "password": "user123",
       "role": "admin",
       "name": "Juan Pérez",
       "created_at": "2024-02-20"
@@ -19,7 +17,6 @@
     {
       "id": 3,
       "email": "clara@example.com",
-      "password": "user123",
       "role": "admin",
       "name": "Clara Palomares",
       "created_at": "2024-03-25"
@@ -27,11 +24,9 @@
     {
       "id": 4,
       "email": "estela@example.com",
-      "password": "user123",
       "role": "admin",
       "name": "Estela Garcia",
       "created_at": "2024-04-30"
     }
-    
   ]
 }

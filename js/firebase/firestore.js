@@ -1,8 +1,7 @@
 // ============================================================================
-//  Capa de acceso a datos para el CRUD sobre la colección de users em Firestore.
-//  Todas las funciones devuelven Promesas y mapean cada documento a:
-//      { id: <docId>, name, email, password, role, created_at }
-//  donde `id` es el ID del documento de Firestore (string).
+// Capa de acceso a datos para el CRUD de perfiles de usuario en Firestore.
+// Los documentos de la colección users contienen:
+// { id: <docId>, name, email, role, created_at }
 // ============================================================================
 
 import {
@@ -21,79 +20,108 @@ import {
 
 import { db, USERS_COLLECTION } from "./firebase.config.js";
 
-// Referencia a la colección
+// Referencia a la colección de usuarios
 const usersRef = collection(db, USERS_COLLECTION);
 
-// Convierte un snapshot de documento en un objeto plano con su id
+// Convierte un snapshot de Firestore en un objeto con su id
 function mapUser(docSnap) {
-  return { id: docSnap.id, ...docSnap.data() };
+  return {
+    id: docSnap.id,
+    ...docSnap.data()
+  };
 }
 
-// Se hacen todos los snapshot de los usuarios
+// Obtiene todos los perfiles ordenados por fecha de creación
 export async function getUsers() {
-  const snapshot = await getDocs(query(usersRef, orderBy("created_at", "asc")));
+  const snapshot = await getDocs(
+    query(usersRef, orderBy("created_at", "asc"))
+  );
+
   return snapshot.docs.map(mapUser);
 }
 
-// Se crea un usuario por id de documento 
+// Obtiene un perfil por su ID de documento
 export async function getUserById(id) {
-  const snapshot = await getDoc(doc(db, USERS_COLLECTION, id));
+  const snapshot = await getDoc(
+    doc(db, USERS_COLLECTION, id)
+  );
+
   return snapshot.exists() ? mapUser(snapshot) : null;
 }
 
-// se checa por email (para login y que no haya duplicados)
+// Obtiene un perfil mediante su correo electrónico
 export async function getUserByEmail(email) {
   const snapshot = await getDocs(
-    query(usersRef, where("email", "==", email), limit(1))
+    query(
+      usersRef,
+      where("email", "==", email),
+      limit(1)
+    )
   );
+
   return snapshot.empty ? null : mapUser(snapshot.docs[0]);
 }
 
-// Se crea un usuario nuevo
+// Crea un nuevo perfil de usuario
 export async function createUser(user) {
   const payload = {
     name: user.name,
     email: user.email,
-    password: user.password,
     role: user.role || "admin",
-    created_at: user.created_at || new Date().toISOString().split("T")[0]
+    created_at:
+      user.created_at ||
+      new Date().toISOString().split("T")[0]
   };
 
   const ref = await addDoc(usersRef, payload);
-  return { id: ref.id, ...payload };
+
+  return {
+    id: ref.id,
+    ...payload
+  };
 }
 
-// Se actualiza un usuario por id de documento (changes es un objeto con los campos a actualizar)
+// Actualiza un perfil por su ID de documento
 export async function updateUser(id, changes) {
-  await updateDoc(doc(db, USERS_COLLECTION, id), changes);
+  await updateDoc(
+    doc(db, USERS_COLLECTION, id),
+    changes
+  );
+
   return getUserById(id);
 }
 
-// Elimina un usuario por id de documento 
+// Elimina un perfil por su ID de documento
 export async function deleteUserById(id) {
-  await deleteDoc(doc(db, USERS_COLLECTION, id));
+  await deleteDoc(
+    doc(db, USERS_COLLECTION, id)
+  );
+
   return id;
 }
 
-// Esto checa si la colección de usuarios está vacía y, si lo está, la llena con el JSON en data/users.json.
-//  Nomas irve para la primera ejecución, pa no tener que cargar los datos a mano.
-//  Devuelve true si se insertaron datos, false si la colección ya tenía usuarios.
+// Inicializa la colección con los perfiles definidos en data/users.json
+// únicamente cuando la colección se encuentra vacía.
 export async function seedUsersIfEmpty(jsonPath) {
-  const snapshot = await getDocs(query(usersRef, limit(1)));
-  if (!snapshot.empty) return false;
+  const snapshot = await getDocs(
+    query(usersRef, limit(1))
+  );
+
+  if (!snapshot.empty) {
+    return false;
+  }
 
   const response = await fetch(jsonPath);
   const data = await response.json();
   const seedUsers = data.users || [];
 
   await Promise.all(
-    seedUsers.map((u) =>
+    seedUsers.map((user) =>
       addDoc(usersRef, {
-        name: u.name,
-        email: u.email,
-        password: u.password,
-        role: u.role,
-        created_at: u.created_at
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        created_at: user.created_at
       })
     )
   );

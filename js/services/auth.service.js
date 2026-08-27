@@ -1,14 +1,18 @@
-import { APP_CONFIG } from "../config/config.js";
-import { loginWithFirestore } from "../firebase/auth.js";
-import { setCookie, getCookie, deleteCookie } from "../utils/cookie.utils.js";
-import { generateFakeJWT, decodeJWTPayload, isJWTExpired } from "../utils/jwt.utils.js";
+import {
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
-const COOKIE_NAME = "gh_token";
+import { APP_CONFIG } from "../config/config.js";
+import { auth } from "../firebase/firebase.config.js";
+import { loginWithFirebase } from "../firebase/auth.js";
+import { setCookie, getCookie, deleteCookie } from "../utils/cookie.utils.js";
+
+const COOKIE_NAME = "gh_session";
 const COOKIE_MAX_AGE = 3600;
 
 export async function login(email, password) {
   try {
-    const currentUser = await loginWithFirestore(email, password);
+    const currentUser = await loginWithFirebase(email, password);
 
     if (!currentUser) {
       return {
@@ -17,19 +21,19 @@ export async function login(email, password) {
       };
     }
 
-    const token = generateFakeJWT(currentUser);
+    // Cookie de sesión utilizada como parte de los requisitos del proyecto.
+    // No almacena credenciales ni información sensible.
+    setCookie(COOKIE_NAME, "active", COOKIE_MAX_AGE);
 
-    setCookie(COOKIE_NAME, token, COOKIE_MAX_AGE);
-    localStorage.setItem(APP_CONFIG.storageKeys.authKey, JSON.stringify(currentUser));
-
-    console.log("JWT generado:", token);
-    console.log("Payload decodificado:", decodeJWTPayload(token));
+    localStorage.setItem(
+      APP_CONFIG.storageKeys.authKey,
+      JSON.stringify(currentUser)
+    );
 
     return {
       success: true,
       user: currentUser,
-      role: currentUser.role,
-      token
+      role: currentUser.role
     };
   } catch (error) {
     console.error("Error en login:", error);
@@ -41,46 +45,42 @@ export async function login(email, password) {
   }
 }
 
-export function logout() {
-  clearSession();
-  window.location.href = APP_CONFIG.routes.login;
+export async function logout() {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    console.error("Error al cerrar sesión en Firebase:", error);
+  } finally {
+    clearSession();
+    window.location.href = APP_CONFIG.routes.login;
+  }
 }
 
 export function isAuthenticated() {
-  const token = getCookie(COOKIE_NAME);
+  const session = getCookie(COOKIE_NAME);
 
-  if (!token) {
+  if (session !== "active") {
     clearSession();
     return false;
   }
 
-  if (isJWTExpired(token)) {
-    clearSession();
-    return false;
-  }
-
-  restoreUserFromToken(token);
-  return true;
+  return getCurrentUser() !== null;
 }
 
 export function getCurrentUser() {
-  const token = getCookie(COOKIE_NAME);
+  const session = getCookie(COOKIE_NAME);
 
-  if (!token) {
+  if (session !== "active") {
     clearSession();
     return null;
   }
 
-  if (isJWTExpired(token)) {
-    clearSession();
-    return null;
-  }
-
-  restoreUserFromToken(token);
-
-  const storedUser = localStorage.getItem(APP_CONFIG.storageKeys.authKey);
+  const storedUser = localStorage.getItem(
+    APP_CONFIG.storageKeys.authKey
+  );
 
   if (!storedUser) {
+    clearSession();
     return null;
   }
 
@@ -95,30 +95,12 @@ export function getCurrentUser() {
 
 export function isAdmin() {
   const user = getCurrentUser();
-  return user && user.role === "admin";
+  return user?.role === "admin";
 }
 
 export function isUser() {
   const user = getCurrentUser();
-  return user && user.role === "user";
-}
-
-function restoreUserFromToken(token) {
-  const payload = decodeJWTPayload(token);
-
-  if (!payload) {
-    clearSession();
-    return;
-  }
-
-  const userFromToken = {
-    id: payload.sub,
-    email: payload.email,
-    name: payload.name,
-    role: payload.role
-  };
-
-  localStorage.setItem(APP_CONFIG.storageKeys.authKey, JSON.stringify(userFromToken));
+  return user?.role === "user";
 }
 
 function clearSession() {

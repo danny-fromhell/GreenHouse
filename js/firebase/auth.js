@@ -1,27 +1,45 @@
 // ============================================================================
-//  Se hace la validación de credenciales contra la colección users en Firestore.
+// Autenticación de usuarios mediante Firebase Authentication
 // ============================================================================
 
-import { getUserByEmail, seedUsersIfEmpty } from "./firestore.js";
-import { APP_CONFIG } from "../config/config.js";
+import {
+  signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
-// Devuelve el objeto de usuario (sin password) si las credenciales son
-// correctas, o null si no lo son.
-export async function loginWithFirestore(email, password) {
-  // Garantiza que existan usuarios la primera vez que se usa la app.
-  await seedUsersIfEmpty(APP_CONFIG.localData.users);
+import { auth } from "./firebase.config.js";
+import { getUserByEmail } from "./firestore.js";
 
-  const user = await getUserByEmail(email);
+/**
+ * Autentica al usuario mediante Firebase Authentication y recupera
+ * su información de perfil desde Firestore.
+ *
+ * @param {string} email
+ * @param {string} password
+ * @returns {Promise<Object|null>}
+ */
+export async function loginWithFirebase(email, password) {
+  try {
+    const credential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
 
-  if (!user || user.password !== password) {
+    const profile = await getUserByEmail(credential.user.email);
+
+    if (!profile) {
+      return null;
+    }
+
+    return {
+      id: profile.id,
+      email: credential.user.email,
+      name: profile.name,
+      role: profile.role,
+      created_at: profile.created_at
+    };
+  } catch (error) {
+    console.error("Error de autenticación:", error.code);
     return null;
   }
-
-  return {
-    id: user.id,
-    email: user.email,
-    name: user.name,
-    role: user.role,
-    created_at: user.created_at
-  };
 }
