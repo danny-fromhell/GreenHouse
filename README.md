@@ -1,14 +1,165 @@
 # Green House
 
+Green House es una aplicación web enfocada en la consulta y visualización de información sobre plantas, sus características y cuidados.
+
+El proyecto utiliza una arquitectura MVC con HTML, CSS y JavaScript, consume información de una API REST e integra Firebase Authentication y Cloud Firestore para la autenticación y gestión de usuarios.
+
 ---
 
-# Flujo de trabajo con Git y ramas
+## Objetivo del proyecto
 
-Para mantener una organización adecuada del proyecto y cumplir con el requisito de utilizar una branch principal (`main`) y Pull Requests por integrante, se implementó la siguiente estructura de ramas:
+Desarrollar una plataforma web dinámica que permita:
 
-## Estructura de ramas
+* Consultar información sobre plantas.
+* Visualizar sus características y cuidados.
+* Consumir información desde una API REST.
+* Implementar autenticación de usuarios mediante Firebase Authentication.
+* Gestionar usuarios mediante Cloud Firestore.
+* Utilizar almacenamiento local y cookies para funciones de la aplicación.
+* Mostrar métricas en un dashboard administrativo.
+* Mantener una interfaz responsive con modo claro y oscuro.
 
-```txt id="x1zw95"
+---
+
+## Funcionalidades principales
+
+### Usuario general
+
+* Visualización del catálogo de plantas.
+* Consulta de información y cuidados.
+* Búsqueda y filtrado de plantas.
+* Navegación dinámica.
+* Interfaz responsive.
+* Modo claro y oscuro.
+
+### Administrador
+
+* Inicio de sesión mediante Firebase Authentication.
+* Dashboard administrativo.
+* Visualización de métricas y estadísticas.
+* Gestión de usuarios.
+* Consulta y modificación de información almacenada en Cloud Firestore.
+
+---
+
+## Tecnologías utilizadas
+
+### Frontend
+
+* HTML5
+* CSS3
+* JavaScript
+
+### Arquitectura
+
+* MVC (Model-View-Controller)
+
+### Backend y servicios
+
+* Firebase Authentication
+* Cloud Firestore
+* Perenual API
+
+### Herramientas
+
+* Git
+* GitHub
+* Jira
+
+---
+
+## Configuración
+
+El proyecto utiliza archivos de configuración local que no se almacenan directamente en el repositorio para evitar publicar credenciales o claves asociadas a servicios externos.
+
+### Firebase
+
+El repositorio incluye el archivo:
+
+```text
+js/firebase/firebase.config.example.js
+```
+
+Crea una copia con el nombre:
+
+```text
+js/firebase/firebase.config.js
+```
+
+y sustituye los valores de ejemplo por la configuración correspondiente a tu proyecto de Firebase.
+
+Ejemplo:
+
+```javascript
+const firebaseConfig = {
+  apiKey: "YOUR_FIREBASE_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.firebasestorage.app",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+```
+
+El archivo `firebase.config.js` está excluido mediante `.gitignore`.
+
+### Perenual API
+
+La aplicación permite configurar la API de Perenual desde:
+
+```text
+js/config/config.js
+```
+
+Agrega tu API key en la propiedad correspondiente:
+
+```javascript
+perenualApi: {
+  baseUrl: "https://perenual.com/api/v2",
+  apiKey: ""
+}
+```
+
+No publiques claves privadas o credenciales dentro del repositorio.
+
+---
+
+## Estructura del proyecto
+
+```text
+GreenHouse/
+│
+├── index.html
+├── plants.html
+├── dashboard.html
+├── login.html
+├── users.html
+│
+├── js/
+│   ├── config/
+│   ├── controllers/
+│   ├── firebase/
+│   ├── services/
+│   ├── utils/
+│   ├── views/
+│   └── main.js
+│
+├── css/
+├── assets/
+├── data/
+├── .gitignore
+└── README.md
+```
+
+---
+
+## Flujo de trabajo con Git y ramas
+
+Para mantener organizada la colaboración del equipo se utilizó una rama principal (`main`), una rama de integración (`dev`) y ramas individuales para cada integrante.
+
+### Estructura de ramas
+
+```text
 main
 └── dev
     ├── dannyDev
@@ -19,172 +170,69 @@ main
     └── luisDev
 ```
 
-## Descripción de ramas
-
 ### `main`
 
 Contiene la versión final y estable del proyecto.
 
 ### `dev`
 
-Rama de integración general donde se realizan las pruebas y merges del trabajo del equipo antes de pasar a producción.
+Rama utilizada para integrar y probar los cambios del equipo antes de incorporarlos a `main`.
 
 ### Ramas individuales
 
-Cada integrante trabaja únicamente en su propia rama para evitar conflictos y mantener organizado el desarrollo.
+Cada integrante trabajó en su propia rama para mantener separados los cambios durante el desarrollo.
 
-| Rama      | Integrante |
-| --------- | ---------- |
-| dannyDev  | Danny      |
-| abiDev    | Abi        |
-| tonaDev   | Tona       |
-| flaviaDev | Flavia     |
-| axelDev   | Axel       |
-| luisDev   | Luis       |
+| Rama | Integrante |
+| --- | --- |
+| `dannyDev` | Danny |
+| `abiDev` | Abi |
+| `tonaDev` | Tona |
+| `flaviaDev` | Flavia |
+| `axelDev` | Axel |
+| `luisDev` | Luis |
 
 ---
 
-# Flujo de trabajo
+## Flujo de trabajo
 
 1. Cada integrante desarrolla funcionalidades en su propia rama.
-2. Los cambios se suben al repositorio mediante commits.
-3. Se crea un Pull Request hacia la rama `dev`.
-4. Después de validar la integración y funcionamiento del proyecto, los cambios de `dev` se integran a `main`.
+2. Los cambios se registran mediante commits.
+3. Se crea un Pull Request hacia `dev`.
+4. Se revisa y prueba la integración.
+5. Los cambios validados se incorporan a `main`.
 
 ---
 
-# Reglas de trabajo
+## Reglas de trabajo
 
-* No trabajar directamente sobre `main`
-* Todos los cambios deben pasar por Pull Request
-* Mantener sincronizada la rama personal con `dev`
-* Realizar commits descriptivos y organizados
-* Verificar funcionamiento antes de hacer merge
-
-
----
-
-# Objetivo del proyecto
-
-Desarrollar una plataforma web dinámica que permita:
-
-* Consultar información de plantas
-* Visualizar cuidados y características
-* Consumir una API REST
-* Implementar autenticación JWT
-* Utilizar cookies
-* Mostrar métricas en un dashboard administrativo
+* No trabajar directamente sobre `main`.
+* Integrar cambios mediante Pull Requests.
+* Mantener sincronizadas las ramas de desarrollo.
+* Realizar commits descriptivos.
+* Verificar el funcionamiento antes de realizar un merge.
 
 ---
 
-# Funcionalidades principales
+## Integrantes del equipo
 
-## Usuario general
-
-* Visualización de catálogo de plantas
-* Consulta de información y cuidados
-* Interfaz responsive
-* Navegación dinámica
-* Modo claro y oscuro
-* Búsqueda y filtrado de plantas
-
-## Administrador
-
-* Inicio de sesión mediante JWT
-* Dashboard de métricas
-* Visualización de estadísticas
-* Monitoreo de interacciones 
+| Integrante | Responsabilidad |
+| --- | --- |
+| Danny | Arquitectura MVC, lógica principal y conexión con API REST. |
+| Abi | Sketch del sitio, dashboard y pantalla de usuarios. |
+| Flavia | Manejo de datos y cookies. |
+| Tona | Creación e integración de la base de datos. |
+| Axel | Implementación inicial del sistema de autenticación. |
+| Luis | Integración, pruebas y correcciones. |
 
 ---
 
-# Tecnologías utilizadas
+## Requisitos del proyecto
 
-## Frontend
-
-* HTML
-* CSS
-* JavaScript 
-
-## Arquitectura
-
-* MVC (Model View Controller)
-
-## Herramientas
-
-* Git
-* GitHub
-* Jira
-
-## Extras
-
-* API REST
-* JWT Authentication
-* JSON
-
----
-
-# Estructura del proyecto
-
-```txt
-GreenHouse/
-│
-├── index.html
-├── plants.html
-├── dashboard.html
-├── login.html
-│
-├── js/
-│   ├── config/
-│   │   └── config.js
-│   │
-│   ├── services/
-│   │   ├── api.service.js
-│   │   ├── auth.service.js
-│   │   └── cache.js
-│   │
-│   ├── controllers/
-│   │   ├── plants.controller.js
-│   │   ├── auth.controller.js
-│   │   └── dashboard.controller.js
-│   │
-│   ├── views/
-│   │   ├── plants.view.js
-│   │   ├── dashboard.view.js
-│   │   └── home.view.js
-│   │
-│   ├── utils/
-│   │   └── utils.js
-│   │
-│   └── main.js
-│
-├── css/
-├── assets/
-├── data/
-└── README.md
-```
-
----
-
-# Integrantes del equipo
-
-| Integrante | Responsabilidad                                                         |
-| ---------- | ----------------------------------------------------------------------- |
-| Danny      | Arquitectura MVC, lógica principal y conexion API REST.                 |
-| Abi        | Sketch del sitio y dasboard, pantalla de usuarios.                      |
-| Flavia     | Datos y cookies.                                                        |
-| Tona       | Creación de BD y conexion de BD.                                        |
-| Axel       | Autenticacion JWT.                                                      |
-| Luis       | Integración, pruebas y correciones.                                     |
-
----
-
-# Requisitos del proyecto
-
-* Consumo de API REST
-* Arquitectura MVC
-* Responsive Design
-* Dashboard administrativo
-* Uso de GitHub y Pull Requests
-* Modo claro y oscuro
-* Presentación funcional
-
+* Consumo de API REST.
+* Arquitectura MVC.
+* Diseño responsive.
+* Dashboard administrativo.
+* Gestión de usuarios.
+* Uso de GitHub y Pull Requests.
+* Modo claro y oscuro.
+* Presentación funcional.
