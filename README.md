@@ -258,4 +258,6 @@ el desarrollo de aplicaciones web con JavaScript, arquitectura MVC, consumo de
 APIs REST, autenticación, integración con servicios en la nube y persistencia
 de información.
 
+## Licencia
+
 Este proyecto fue desarrollado con fines académicos y demostrativos.
