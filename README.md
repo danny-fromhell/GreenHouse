@@ -236,3 +236,26 @@ Cada integrante trabajó en su propia rama para mantener separados los cambios d
 * Uso de GitHub y Pull Requests.
 * Modo claro y oscuro.
 * Presentación funcional.
+
+## Estado del proyecto
+
+Green House cuenta con una versión funcional que integra los principales
+requerimientos planteados para la aplicación:
+
+* Consulta y visualización de información sobre plantas.
+* Búsqueda y filtrado del catálogo.
+* Consumo de la API REST de Perenual.
+* Autenticación de usuarios mediante Firebase Authentication.
+* Gestión de usuarios mediante Cloud Firestore.
+* Dashboard administrativo con métricas y estadísticas.
+* Arquitectura MVC.
+* Almacenamiento local y uso de cookies.
+* Diseño responsive.
+* Modo claro y oscuro.
+
+Actualmente se conserva como proyecto académico y de portafolio para demostrar
+el desarrollo de aplicaciones web con JavaScript, arquitectura MVC, consumo de
+APIs REST, autenticación, integración con servicios en la nube y persistencia
+de información.
+
+Este proyecto fue desarrollado con fines académicos y demostrativos.
